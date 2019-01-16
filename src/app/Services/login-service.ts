@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class LoginService {
 
-  environment: string = 'http://localhost:4200/';
-
   constructor(private http: HttpClient) { }
 
   login(username: string, password: string) {
-    return this.http.post<any>(this.environment + `/users/connect`, { username: username, password: password })
+    return this.http.post<any>(`${environment.apiUrl}/users/connect`, { username: username, password: password })
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
         if (user && user.token) {
