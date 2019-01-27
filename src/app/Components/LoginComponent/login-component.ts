@@ -14,13 +14,14 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   submitted = false;
+  error = false;
   returnUrl: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: LoginService) {}
+    private loginService: LoginService) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
     });
 
     // reset login status
-    this.authenticationService.logout();
+    this.loginService.logout();
 
     // get return url from route parameters or default to '/'
     this.returnUrl = '/';
@@ -47,13 +48,15 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.f.username.value, this.f.password.value)
+    this.loginService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         data => {
+          console.log(data);
           this.router.navigate([this.returnUrl]);
         },
         error => {
+          this.error = true;
           this.loading = false;
         });
   }

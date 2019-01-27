@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
-import { User } from '../../Models';
-import { UserService } from '../../Services/user-service';
+import { User } from '../../Models/user';
+import { Match } from '../../Models/match';
+import { MatchService } from '../../Services/match-service';
+import { LoginService } from '../../Services/login-service';
 
 @Component({
   templateUrl: './home-component.html',
@@ -11,25 +14,38 @@ import { UserService } from '../../Services/user-service';
 
 export class HomeComponent implements OnInit {
   currentUser: User;
-  users: User[] = [];
+  matches: Match[] = [];
+  connected: boolean;
 
-  constructor(private userService: UserService) {
+  constructor(
+    private matchService: MatchService,
+    private loginService: LoginService,
+    private router: Router
+  ) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (localStorage.getItem('currentUser')) {
+      this.connected = true;
+    } else {
+      this.connected = false;
+    }
   }
 
   ngOnInit() {
-    this.loadAllUsers();
+    this.loadAllMatches();
   }
 
-  deleteUser(id: number) {
-    this.userService.delete(id).pipe(first()).subscribe(() => {
-      this.loadAllUsers()
-    });
+  logout() {
+    this.loginService.logout();
+    this.router.navigate(['/login']);
   }
 
-  private loadAllUsers() {
-    this.userService.getAll().pipe(first()).subscribe(users => {
-      this.users = users;
+  login() {
+    this.router.navigate(['/login']);
+  }
+
+  private loadAllMatches() {
+    this.matchService.getMatches().pipe(first()).subscribe(matches => {
+      this.matches = matches;
     });
   }
 }

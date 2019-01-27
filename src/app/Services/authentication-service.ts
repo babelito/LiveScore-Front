@@ -7,14 +7,15 @@ export class AuthenticationService implements CanActivate {
   constructor(private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (localStorage.getItem('currentUser')) {
-      // logged in so return true
+
+    if (this.router.url === '/login' && localStorage.getItem('currentUser')) {
+      this.router.navigate(['']);
+      return false;
+    } else if (this.router.url === '/addMatch' && !localStorage.getItem('currentUser')) {
+      this.router.navigate(['']);
+      return false;
+    } else {
       return true;
     }
-
-
-    // not logged in so redirect to login page with the return url
-    this.router.navigate(['/login']);
-    return false;
   }
 }
