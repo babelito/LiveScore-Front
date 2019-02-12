@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { ContainerComponent } from '../ContainerComponent/container-component';
 
 import { LoginService } from '../../Services/login-service';
 
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private loginService: LoginService) {}
+    private loginService: LoginService,
+    private container: ContainerComponent) {}
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -48,11 +50,12 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
+
     this.loginService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe(
         data => {
-          console.log(data);
+          this.container.connected = true;
           this.router.navigate([this.returnUrl]);
         },
         error => {

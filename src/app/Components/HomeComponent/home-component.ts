@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { User } from '../../Models/user';
 import { Match } from '../../Models/match';
 import { MatchService } from '../../Services/match-service';
-import { LoginService } from '../../Services/login-service';
+import { ContainerComponent } from '../ContainerComponent/container-component';
 
 @Component({
   templateUrl: './home-component.html',
@@ -18,29 +18,16 @@ export class HomeComponent implements OnInit {
   connected: boolean;
 
   constructor(
+    private container: ContainerComponent,
     private matchService: MatchService,
-    private loginService: LoginService,
     private router: Router
   ) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (localStorage.getItem('currentUser')) {
-      this.connected = true;
-    } else {
-      this.connected = false;
-    }
   }
 
   ngOnInit() {
     this.loadAllMatches();
-  }
-
-  logout() {
-    this.loginService.logout();
-    this.connected = false;
-  }
-
-  login() {
-    this.router.navigate(['/login']);
+    this.connected = this.container.connected;
   }
 
   goToAddMatch() {

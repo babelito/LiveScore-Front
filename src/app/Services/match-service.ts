@@ -19,8 +19,19 @@ export class MatchService {
   }
 
   createMatch(home, away, referee, date) {
-    const body = 'home=' + home + '&away=' + away + '&referee=' + referee + '&date=' + date;
-    return this.http.post(`${environment.apiUrl}/match/create`, body/*, {headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')}*/);
+    const body = new HttpParams()
+      .set('home', '1')
+      .set('away', '2')
+      .set('referee', '1')
+      .set('date', '2019-01-01');
+
+    return this.http.post(`${environment.apiUrl}/match/create`,
+      body.toString(),
+      {
+        headers: new HttpHeaders()
+          .set('Content-Type', 'application/x-www-form-urlencoded')
+      }
+    );
   }
 
 }
