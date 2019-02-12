@@ -16,8 +16,11 @@ import {environment} from '../../../environments/environment';
 
 export class AddMatchComponent implements OnInit {
   matches: Match[] = [];
-  loaded = false;
   addMatchForm: FormGroup;
+  teams: [];
+  referees: [];
+  submitted = false;
+  loading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,9 +30,9 @@ export class AddMatchComponent implements OnInit {
 
   ngOnInit() {
     this.addMatchForm = this.formBuilder.group({
-      dom: ['', Validators.required],
-      ext: ['', Validators.required],
-      arbitre: ['', Validators.required],
+      home: ['', Validators.required],
+      away: ['', Validators.required],
+      referee: ['', Validators.required],
       date: ['', Validators.required]
     });
     this.loadInfo();
@@ -38,29 +41,25 @@ export class AddMatchComponent implements OnInit {
   get f() { return this.addMatchForm.controls; }
 
   onSubmit() {
-    // stop here if form is invalid
+
+    this.submitted = true;
+
     if (this.addMatchForm.invalid) {
       return;
     }
-  }
 
-  public setLoaded() {
-    this.loaded = true;
+    this.loading = true;
+    this.createMatch();
   }
 
   private loadInfo() {
-    const matchService = this.matchService;
-    const promise = new Promise(function(resolve, reject) {
-      matchService.getMatches().pipe(first()).subscribe(matches => {
-        this.matches = matches;
-        resolve('ok');
-      });
+    this.matchService.getInfos().pipe(first()).subscribe((info: {teams: [], referees: []}) => {
+      this.teams = info.teams;
+      this.referees = info.referees;
     });
+  }
 
-    promise.then(
-      // this.setLoaded()
-    );
-
-
+  private createMatch() {
+    this.matchService.createMatch(/*{home: '1', away: '2', referee: '1', date: '2019-01-29'}*/ '1', '2', '1', '2019-01-30');
   }
 }

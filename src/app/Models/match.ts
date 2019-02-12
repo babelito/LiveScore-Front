@@ -1,7 +1,6 @@
-export class Match {
-  id: number;
-  Dom: string;
-  ButDom: number;
-  Ext: string;
-  ButExt: number;
+export interface Match {
+  home: string;
+  away: string;
+  referee: string;
+  date: string;
 }

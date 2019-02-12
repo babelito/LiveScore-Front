@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+import {MatDatepickerModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
 
 import { routing } from './app-routing.module';
@@ -18,7 +20,9 @@ import {AddMatchComponent} from './Components/AddMatchComponent/addmatch-compone
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
+    MatDatepickerModule, MatInputModule, MatNativeDateModule,
     HttpClientModule,
     routing
   ],
