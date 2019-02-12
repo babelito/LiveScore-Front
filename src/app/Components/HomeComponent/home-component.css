@@ -9,3 +9,12 @@
 .table {
   margin-top: 10px;
 }
+
+.card {
+  margin-top: 10px;
+}
+
+.details {
+  float: right;
+  margin-bottom: 15px;
+}

@@ -2,20 +2,27 @@
 <button class="btn btn-primary" (click)="logout()" *ngIf="connected">Logout</button>
 <button class="btn btn-primary" (click)="login()" *ngIf="!connected">Login</button>
 
-
-
-<div *ngFor="let match of matches">
-  <table class="table table-bordered">
-  <tr>
-    <th> Match </th>
-    <th> Resultat </th>
-  </tr>
-  <tr>
-    <td> {{match.Dom}} - {{match.Ext}}</td>
-    <td>{{match.ButDom}} - {{match.ButExt}}</td>
-  </tr>
-  </table>
-
+<div class="card">
+  <div class="card-header">
+    Nom du tournoi - Date du tournoi
+  </div>
+  <div class="card-body">
+      <div *ngFor="let match of matches">
+        <table class="table table-bordered">
+        <tr>
+          <th> Match </th>
+          <th> Resultat </th>
+        </tr>
+        <tr>
+          <td> {{match.Dom}} - {{match.Ext}}</td>
+          <td>{{match.ButDom}} - {{match.ButExt}}</td>
+        </tr>
+        </table>
+        <button class="btn btn-primary details"> Détails </button>            
+      </div>
 </div>
 <button class="btn btn-primary right" (click)="goToAddMatch()" *ngIf="connected">Add Match</button>
+</div>
+
+
 </div>
