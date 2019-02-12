@@ -36,11 +36,15 @@ export class HomeComponent implements OnInit {
 
   logout() {
     this.loginService.logout();
-    this.router.navigate(['/login']);
+    this.connected = false;
   }
 
   login() {
     this.router.navigate(['/login']);
+  }
+
+  goToAddMatch() {
+    this.router.navigate(['/addMatch']);
   }
 
   private loadAllMatches() {

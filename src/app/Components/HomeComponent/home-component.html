@@ -1,3 +1,7 @@
-<div *ngFor="let match of matches">{{match.Dom}} {{match.ButDom}} - {{match.ButExt}}  {{match.Ext}}</div>
 <button class="btn btn-primary" (click)="logout()" *ngIf="connected">Logout</button>
 <button class="btn btn-primary" (click)="login()" *ngIf="!connected">Login</button>
+
+
+<div *ngFor="let match of matches">{{match.Dom}} {{match.ButDom}} - {{match.ButExt}}  {{match.Ext}}</div>
+
+<button class="btn btn-primary" (click)="goToAddMatch()" *ngIf="connected">Add Match</button>
