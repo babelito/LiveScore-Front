@@ -9,6 +9,7 @@
       <label for="home">Home team</label>
 
       <select class="form-control" formControlName="home" id="home">
+        <option>-----</option>
         <option *ngFor="let team of teams">
           {{team.Nom}}
         </option>
@@ -20,6 +21,7 @@
       <label for="away">Away team</label>
 
       <select class="form-control" formControlName="away" id="away">
+        <option>-----</option>
         <option *ngFor="let team of teams">
           {{team.Nom}}
         </option>
@@ -31,6 +33,7 @@
       <label for="referee">Referee</label>
 
       <select class="form-control" formControlName="referee" id="referee">
+        <option>-----</option>
         <option *ngFor="let referee of referees">
           {{referee.Nom}}
         </option>

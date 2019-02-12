@@ -1,21 +1,15 @@
 <div class="container">
-<button class="btn btn-primary" (click)="logout()" *ngIf="connected">Logout</button>
-<button class="btn btn-primary" (click)="login()" *ngIf="!connected">Login</button>
-
-
-
-<div *ngFor="let match of matches">
-  <table class="table table-bordered">
-  <tr>
-    <th> Match </th>
-    <th> Resultat </th>
-  </tr>
-  <tr>
-    <td> {{match.Dom}} - {{match.Ext}}</td>
-    <td>{{match.ButDom}} - {{match.ButExt}}</td>
-  </tr>
-  </table>
-
-</div>
-<button class="btn btn-primary right" (click)="goToAddMatch()" *ngIf="connected">Add Match</button>
+  <div *ngFor="let match of matches">
+    <table class="table table-bordered">
+      <tr>
+        <th> Match </th>
+        <th> Resultat </th>
+      </tr>
+      <tr>
+        <td> {{match.Dom}} - {{match.Ext}}</td>
+        <td>{{match.ButDom}} - {{match.ButExt}}</td>
+      </tr>
+    </table>
+  </div>
+  <button class="btn btn-primary right" (click)="goToAddMatch()" *ngIf="connected">Add Match</button>
 </div>

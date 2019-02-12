@@ -2,12 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { User } from '../../Models/user';
 import { Match } from '../../Models/match';
 import { MatchService } from '../../Services/match-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoginService } from '../../Services/login-service';
-import {environment} from '../../../environments/environment';
 
 @Component({
   templateUrl: './addmatch-component.html',
@@ -15,12 +12,12 @@ import {environment} from '../../../environments/environment';
 })
 
 export class AddMatchComponent implements OnInit {
-  matches: Match[] = [];
   addMatchForm: FormGroup;
-  teams: [];
-  referees: [];
+  teams: [string];
+  referees: [string];
   submitted = false;
   loading = false;
+  connected: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,6 +42,7 @@ export class AddMatchComponent implements OnInit {
     this.submitted = true;
 
     if (this.addMatchForm.invalid) {
+      console.log(this.findInvalidControls());
       return;
     }
 
@@ -53,13 +51,24 @@ export class AddMatchComponent implements OnInit {
   }
 
   private loadInfo() {
-    this.matchService.getInfos().pipe(first()).subscribe((info: {teams: [], referees: []}) => {
+    this.matchService.getInfos().pipe(first()).subscribe((info: {teams: [string], referees: [string]}) => {
       this.teams = info.teams;
       this.referees = info.referees;
     });
   }
 
   private createMatch() {
-    this.matchService.createMatch(/*{home: '1', away: '2', referee: '1', date: '2019-01-29'}*/ '1', '2', '1', '2019-01-30');
+    this.matchService.createMatch(this.f.home.value, this.f.away.value, this.f.referee.value, this.f.date.value);
+  }
+
+  public findInvalidControls() {
+    const invalid = [];
+    const controls = this.addMatchForm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalid.push(name);
+      }
+    }
+    return invalid;
   }
 }
