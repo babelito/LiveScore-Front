@@ -1,37 +1,30 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 
 import { Match } from '../Models/match';
+import { Tournament } from '../Models/tournament';
 
 @Injectable()
 export class MatchService {
 
   constructor(private http: HttpClient) { }
 
-  getMatches() {
-    return this.http.get<Match[]>(`${environment.apiUrl}/match/all`);
+  getMatches(tournament: string) {
+    return this.http.get<Match[]>(`${environment.apiUrl}/match/matches/` + tournament);
   }
 
-  getInfos() {
+  getInfo() {
     return this.http.get(`${environment.apiUrl}/match/info`);
   }
 
-  createMatch(home, away, referee, date) {
-    const body = new HttpParams()
-      .set('home', '1')
-      .set('away', '2')
-      .set('referee', '1')
-      .set('date', '2019-01-01');
+  createMatch(match: Match) {
+    return this.http.post<Match>(`${environment.apiUrl}/match/create`, match);
+  }
 
-    return this.http.post(`${environment.apiUrl}/match/create`,
-      body.toString(),
-      {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'application/x-www-form-urlencoded')
-      }
-    );
+  getTournaments() {
+    return this.http.get<Tournament[]>(`${environment.apiUrl}/match/tournaments`);
   }
 
 }

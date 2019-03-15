@@ -3,9 +3,8 @@ import { first } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import { User } from '../../Models/user';
-import { Match } from '../../Models/match';
+import { Tournament } from '../../Models/tournament';
 import { MatchService } from '../../Services/match-service';
-import { ContainerComponent } from '../ContainerComponent/container-component';
 
 @Component({
   templateUrl: './home-component.html',
@@ -14,11 +13,9 @@ import { ContainerComponent } from '../ContainerComponent/container-component';
 
 export class HomeComponent implements OnInit {
   currentUser: User;
-  matches: Match[] = [];
-  connected: boolean;
+  tournaments: Tournament[] = [];
 
   constructor(
-    private container: ContainerComponent,
     private matchService: MatchService,
     private router: Router
   ) {
@@ -26,17 +23,16 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadAllMatches();
-    this.connected = this.container.connected;
+    this.loadAllTournaments();
   }
 
-  goToAddMatch() {
-    this.router.navigate(['/addMatch']);
-  }
-
-  private loadAllMatches() {
-    this.matchService.getMatches().pipe(first()).subscribe(matches => {
-      this.matches = matches;
+  private loadAllTournaments() {
+    this.matchService.getTournaments().pipe(first()).subscribe(tournaments => {
+      this.tournaments = tournaments;
     });
+  }
+
+  goToMatches(tournament: string) {
+    this.router.navigate(['/tournament', tournament]);
   }
 }

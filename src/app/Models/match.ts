@@ -3,4 +3,5 @@ export interface Match {
   away: string;
   referee: string;
   date: string;
+  tournament: string;
 }

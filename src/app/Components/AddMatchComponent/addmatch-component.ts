@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { Match } from '../../Models/match';
 import { MatchService } from '../../Services/match-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as moment from 'moment';
 
 @Component({
   templateUrl: './addmatch-component.html',
@@ -18,12 +18,16 @@ export class AddMatchComponent implements OnInit {
   submitted = false;
   loading = false;
   connected: boolean;
+  tournament: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private matchService: MatchService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.route.params.subscribe(params => { this.tournament = params['id']; });
+  }
 
   ngOnInit() {
     this.addMatchForm = this.formBuilder.group({
@@ -51,14 +55,20 @@ export class AddMatchComponent implements OnInit {
   }
 
   private loadInfo() {
-    this.matchService.getInfos().pipe(first()).subscribe((info: {teams: [string], referees: [string]}) => {
+    this.matchService.getInfo().pipe(first()).subscribe((info: {teams: [string], referees: [string]}) => {
       this.teams = info.teams;
       this.referees = info.referees;
     });
   }
 
-  private createMatch() {
-    this.matchService.createMatch(this.f.home.value, this.f.away.value, this.f.referee.value, this.f.date.value);
+  public createMatch() {
+    this.matchService.createMatch({
+        home: this.f.home.value,
+        away: this.f.away.value,
+        referee: this.f.referee.value,
+        date: moment(this.f.date.value).format('YYYY-MM-DD'),
+        tournament: this.tournament
+    }).subscribe();
   }
 
   public findInvalidControls() {
