@@ -29,6 +29,7 @@ export class ContainerComponent {
   logout() {
     this.loginService.logout();
     this._connected = false;
+    this.router.navigate(['/login']);
   }
 
   get connected(): boolean {

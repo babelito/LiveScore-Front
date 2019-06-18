@@ -12,46 +12,44 @@ import * as moment from 'moment';
 })
 
 export class AddTournamentComponent implements OnInit {
-  addMatchForm: FormGroup;
+  addTournamentForm: FormGroup;
   teams: [string];
   referees: [string];
   submitted = false;
   loading = false;
-  connected: boolean;
-  tournament: string;
+  returnUrl: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private matchService: MatchService,
     private router: Router,
     private route: ActivatedRoute
-  ) {
-    this.route.params.subscribe(params => { this.tournament = params['id']; });
-  }
+  ) {}
 
   ngOnInit() {
-    this.addMatchForm = this.formBuilder.group({
-      home: ['', Validators.required],
-      away: ['', Validators.required],
-      referee: ['', Validators.required],
-      date: ['', Validators.required]
+    this.addTournamentForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      teams: [[], Validators.required]
     });
+
+    this.returnUrl = '/';
+
     this.loadInfo();
   }
 
-  get f() { return this.addMatchForm.controls; }
+  get f() { return this.addTournamentForm.controls; }
 
   onSubmit() {
 
     this.submitted = true;
 
-    if (this.addMatchForm.invalid) {
+    if (this.addTournamentForm.invalid) {
       console.log(this.findInvalidControls());
       return;
     }
 
     this.loading = true;
-    this.createMatch();
+    this.createTournament();
   }
 
   private loadInfo() {
@@ -61,19 +59,20 @@ export class AddTournamentComponent implements OnInit {
     });
   }
 
-  public createMatch() {
-    this.matchService.createMatch({
-        home: this.f.home.value,
-        away: this.f.away.value,
-        referee: this.f.referee.value,
-        date: moment(this.f.date.value).format('YYYY-MM-DD'),
-        tournament: this.tournament
-    }).subscribe();
+  public createTournament() {
+    this.matchService.createTournament({
+        name: this.f.name.value,
+        teams: this.f.teams.value
+    }).subscribe(
+      data => {
+        this.router.navigate([this.returnUrl]);
+      }
+    );
   }
 
   public findInvalidControls() {
     const invalid = [];
-    const controls = this.addMatchForm.controls;
+    const controls = this.addTournamentForm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
         invalid.push(name);

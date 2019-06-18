@@ -16,6 +16,7 @@ import { HomeComponent } from './Components/HomeComponent/home-component';
 import { LoginComponent } from './Components/LoginComponent/login-component';
 import { MatchService } from './Services/match-service';
 import { AddMatchComponent } from './Components/AddMatchComponent/addmatch-component';
+import { AddTournamentComponent } from './Components/AddTournamentComponent/addtournament-component';
 import { TournamentComponent } from './Components/TournamentComponent/tournament-component';
 
 @NgModule({
@@ -32,7 +33,8 @@ import { TournamentComponent } from './Components/TournamentComponent/tournament
     HomeComponent,
     LoginComponent,
     AddMatchComponent,
-    TournamentComponent
+    TournamentComponent,
+    AddTournamentComponent
   ],
   providers: [
     AuthenticationService,

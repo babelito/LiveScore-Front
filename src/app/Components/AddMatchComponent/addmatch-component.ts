@@ -5,6 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { MatchService } from '../../Services/match-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import {Team} from "../../Models/team";
+import {Referee} from "../../Models/referee";
 
 @Component({
   templateUrl: './addmatch-component.html',
@@ -13,12 +15,12 @@ import * as moment from 'moment';
 
 export class AddMatchComponent implements OnInit {
   addMatchForm: FormGroup;
-  teams: [string];
-  referees: [string];
+  teams: Team[] = [];
+  referees: Referee[] = [];
   submitted = false;
   loading = false;
-  connected: boolean;
   tournament: string;
+  returnUrl: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,6 +38,9 @@ export class AddMatchComponent implements OnInit {
       referee: ['', Validators.required],
       date: ['', Validators.required]
     });
+
+    this.returnUrl = '/tournament/' + this.tournament;
+
     this.loadInfo();
   }
 
@@ -50,14 +55,22 @@ export class AddMatchComponent implements OnInit {
       return;
     }
 
+    if (this.f.home.value === this.f.away.value) {
+      alert('Teams has to be different');
+      return;
+    }
+
     this.loading = true;
     this.createMatch();
   }
 
   private loadInfo() {
-    this.matchService.getInfo().pipe(first()).subscribe((info: {teams: [string], referees: [string]}) => {
-      this.teams = info.teams;
-      this.referees = info.referees;
+    this.matchService.getTournamentTeams(this.tournament).pipe(first()).subscribe(teams => {
+      this.teams = teams;
+    });
+
+    this.matchService.getReferees().pipe(first()).subscribe(referees => {
+      this.referees = referees;
     });
   }
 
@@ -68,7 +81,11 @@ export class AddMatchComponent implements OnInit {
         referee: this.f.referee.value,
         date: moment(this.f.date.value).format('YYYY-MM-DD'),
         tournament: this.tournament
-    }).subscribe();
+    }).subscribe(
+      data => {
+        this.router.navigate([this.returnUrl]);
+      }
+    );
   }
 
   public findInvalidControls() {

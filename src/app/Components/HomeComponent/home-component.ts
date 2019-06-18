@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { User } from '../../Models/user';
 import { Tournament } from '../../Models/tournament';
 import { MatchService } from '../../Services/match-service';
+import {ContainerComponent} from "../ContainerComponent/container-component";
 
 @Component({
   templateUrl: './home-component.html',
@@ -14,9 +15,11 @@ import { MatchService } from '../../Services/match-service';
 export class HomeComponent implements OnInit {
   currentUser: User;
   tournaments: Tournament[] = [];
+  connected: boolean;
 
   constructor(
     private matchService: MatchService,
+    private container: ContainerComponent,
     private router: Router
   ) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -24,6 +27,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.loadAllTournaments();
+    this.connected = this.container.connected;
   }
 
   private loadAllTournaments() {
@@ -32,7 +36,11 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  goToMatches(tournament: string) {
+  goToTournament(tournament: string) {
     this.router.navigate(['/tournament', tournament]);
+  }
+
+  goToAddTournament() {
+    this.router.navigate(['/addTournament']);
   }
 }

@@ -8,10 +8,11 @@
         <table class="table table-bordered">
           <tr>
             <th> {{tournament.Nom}} </th>
-            <td><button class="btn btn-primary details" (click)="goToMatches(tournament.Nom)"> Voir matchs </button></td>
+            <td><button class="btn btn-primary details" (click)="goToTournament(tournament.Nom)"> Voir matchs </button></td>
           </tr>
         </table>
       </div>
     </div>
+    <button class="btn btn-primary right" (click)="goToAddTournament()" *ngIf="connected">Add Tournament</button>
   </div>
 </div>

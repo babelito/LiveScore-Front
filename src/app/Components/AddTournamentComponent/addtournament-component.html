@@ -1,54 +1,29 @@
 <div class="container">
 
-  <h2>Create Match</h2>
+  <h2>Create Tournament</h2>
 
-  <form [formGroup]="addMatchForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="addTournamentForm" (ngSubmit)="onSubmit()">
 
     <div class="form-group">
 
-      <label for="home">Home team</label>
+      <label for="name">Name</label>
 
-      <select class="form-control" formControlName="home" id="home">
-        <option>-----</option>
+      <input type="text" formControlName="name" class="form-control" id="name" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+      <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+        <div *ngIf="f.name.errors.required">Name is required</div>
+      </div>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="teams">Teams</label>
+
+      <select multiple class="ui fluid dropdown" id="teams" formControlName="teams">
         <option *ngFor="let team of teams">
           {{team.Nom}}
         </option>
       </select>
-    </div>
-
-    <div class="form-group">
-
-      <label for="away">Away team</label>
-
-      <select class="form-control" formControlName="away" id="away">
-        <option>-----</option>
-        <option *ngFor="let team of teams">
-          {{team.Nom}}
-        </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-
-      <label for="referee">Referee</label>
-
-      <select class="form-control" formControlName="referee" id="referee">
-        <option>-----</option>
-        <option *ngFor="let referee of referees">
-          {{referee.Nom}}
-        </option>
-      </select>
-    </div>
-
-    <div class="form-group">
-
-      <label for="date">Date</label>
-      <br>
-      <mat-form-field>
-        <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Choose a date" id="date">
-        <mat-datepicker-toggle matSuffix [for] = "picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
 
     </div>
 
